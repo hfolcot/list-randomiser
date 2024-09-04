@@ -1,0 +1,34 @@
+:host {
+  header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 75px;
+    background: #41729f;
+    color: #ececd5;
+    display: flex;
+    align-items: center;
+   
+    .logo {
+        height: 60px;
+        margin-left: 15px;
+    }
+
+    ul {
+      display: flex;
+      list-style-type: none;
+      .nav-button {
+          padding: 10px;
+          margin-right: 15px;
+          cursor: pointer;
+
+
+        &.selected, &:hover {
+            background: #274472;
+            border-radius: 5px;
+        }
+      }
+    }
+  }
+}
