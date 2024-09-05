@@ -1,12 +1,19 @@
-
-<div class="list-container">
-    <h3>Saved Lists</h3>
-    @for (list of lists(); track $index) {
-        {{ list.listName }}
-    } @empty {
-        <div class="empty">
-            There's nothing here!
-            <button (click)="createList()">Create a List</button>
-        </div>
-    }
-</div>
+<mat-card appearance="outlined" class="list-container">
+  <mat-card-header
+    ><mat-card-title> Saved Lists </mat-card-title>
+  </mat-card-header>
+  <mat-card-content class="content">
+    <mat-nav-list>
+      @for (list of lists(); track $index) {
+      <div class="list-name">
+        <a mat-list-item (click)="selectList(list)" [activated]="list.id == selectedList()?.id">{{ list.listName }}</a>
+      </div>
+      } @empty {
+      <div class="empty">There's nothing here!</div>
+      }
+    </mat-nav-list>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-flat-button (click)="createList()">Create a List</button>
+  </mat-card-actions>
+</mat-card>

@@ -1,4 +1,5 @@
 export interface IList {
+    id: number;
     listName?: string;
     listContents: IListContent[];
 }
@@ -8,3 +9,4 @@ export interface IListContent {
     content: string;
     selected: boolean;
 }
+

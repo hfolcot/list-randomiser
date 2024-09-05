@@ -14,7 +14,7 @@ export class ListService {
     if(!lists) {
       return [];
     }
-console.log(lists)
-    return [];//JSON.parse(lists);
+
+    return JSON.parse(lists);
   }
 }
