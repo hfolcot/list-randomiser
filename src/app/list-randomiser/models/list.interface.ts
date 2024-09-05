@@ -1,6 +1,6 @@
 export interface IList {
     listName?: string;
-    listContents: any[];
+    listContents: IListContent[];
 }
 
 export interface IListContent {
