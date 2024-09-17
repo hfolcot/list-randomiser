@@ -1,3 +1,6 @@
 <div class="container">
-    <app-lists></app-lists>
+    <app-lists (newListClick)="onNewListClicked()" (listSelected)="onListSelected($event)"></app-lists>
+    @if (listToRandomise) {
+        <app-randomiser [(list)]="listToRandomise"></app-randomiser>   
+    }
 </div>
