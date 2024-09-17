@@ -2,3 +2,6 @@
     {{ selectedItemName }}
 </div>
 <button mat-button (click)="selectRandom()">Randomise</button>
+@if (complete) {
+    <button mat-button (click)="restart()">Start Over</button>
+}

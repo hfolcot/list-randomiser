@@ -17,15 +17,7 @@
     } @else {
       <div class="empty">There's nothing here!</div>
     }
-
-      <mat-list role="list">
-      @for (item of selectedList?.listContents; track item.id) {
-        <mat-list-item role="listitem">{{ item.content }}</mat-list-item>
-      }
-    </mat-list>
-    
   </mat-card-content>
   <mat-card-actions>
-    <!-- <button mat-flat-button (click)="randomise()">Create a List</button> -->
   </mat-card-actions>
 </mat-card>

@@ -1,17 +1,14 @@
-import { Component, computed, effect, inject, output, signal } from '@angular/core';
+import { Component, computed, inject, output } from '@angular/core';
 import { ListService } from '../list.service';
-import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { MatListModule } from '@angular/material/list';
 import { IList } from '../models/list.interface';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-lists',
   standalone: true,
-  imports: [MatButtonModule, MatCardModule, MatListModule, MatFormFieldModule, MatSelectModule, MatIconModule],
+  imports: [MatCardModule, MatSelectModule, MatIconModule],
   templateUrl: './lists.component.html',
   styleUrl: './lists.component.scss'
 })

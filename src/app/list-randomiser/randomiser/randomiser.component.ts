@@ -18,6 +18,7 @@ export class RandomiserComponent {
   remainingItems!: IListContent[];
 
   animating: boolean = false;
+  complete: boolean = false;
 
   selectRandom(): void {
     this.remainingItems = this.list().listContents.filter(item => !item.selected);
@@ -30,19 +31,30 @@ export class RandomiserComponent {
 
     if(this.remainingItems.length > 1){
         this.animate();
+        this.selectRandomItem();
+    } else {
+      this.markItemSelected(0);
+      this.complete = true;
     }
+  }
 
+  restart(): void {
+    this.selectedItem = undefined;
+    this.selectedItemName = "Click To Randomise!";
+    this.list().listContents.forEach(item => item.selected = false);
+  }
+
+  //--
+
+  private selectRandomItem(): void {
     setTimeout(() => {
       const randomIndex = Math.floor(Math.random() * this.remainingItems.length);
-      this.selectedItem = this.remainingItems.at(randomIndex);
-      this.selectedItemName = this.selectedItem?.content;
-      
-      if(!this.selectedItem) {
-        return;
-      }
-      
-      this.selectedItem.selected = true;
+     this.markItemSelected(randomIndex);
 
+     if(!this.selectedItem) {
+      return;
+     }
+      
       const newList: IList = {
         listName: this.list().listName,
         id: this.list().id,
@@ -55,8 +67,18 @@ export class RandomiserComponent {
       this.listChange.emit(newList);
 
       this.animating = false;
-    }, 2000);
+    }, 1500);
+  }
 
+  private markItemSelected(index: number): void {
+    this.selectedItem = this.remainingItems.at(index);
+    this.selectedItemName = this.selectedItem?.content;
+
+    if(!this.selectedItem) {
+      return;
+    }
+    
+    this.selectedItem.selected = true;
   }
 
   private animate(): void {
@@ -70,8 +92,7 @@ export class RandomiserComponent {
       if (!this.animating || intervalTimer < 10) {
         return;
       }
-  
-      console.log(intervalTimer);
+
       this.selectedItemName = this.remainingItems.at(Math.floor(Math.random() * this.remainingItems.length))?.content;
   
       intervalTimer += 10;

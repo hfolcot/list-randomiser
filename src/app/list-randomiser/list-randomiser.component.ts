@@ -5,12 +5,14 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { IList } from './models/list.interface';
 import { ListService } from './list.service';
 import { RandomiserComponent } from "./randomiser/randomiser.component";
+import { MatListModule } from '@angular/material/list';
+import { MatIconModule } from '@angular/material/icon';
 
 
 @Component({
   selector: 'app-list-randomiser',
   standalone: true,
-  imports: [ListsComponent, ListEditorComponent, MatDialogModule, RandomiserComponent],
+  imports: [ListsComponent, ListEditorComponent, MatDialogModule, RandomiserComponent, MatListModule, MatIconModule],
   templateUrl: './list-randomiser.component.html',
   styleUrl: './list-randomiser.component.scss'
 })
