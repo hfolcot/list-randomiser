@@ -1,19 +1,31 @@
 <mat-card appearance="outlined" class="list-container">
   <mat-card-header
-    ><mat-card-title> Saved Lists </mat-card-title>
+    >
+    <mat-card-title> Your Lists <mat-icon aria-hidden="false" aria-label="Add List" fontIcon="add_circle" (click)="createList()"></mat-icon></mat-card-title>
   </mat-card-header>
   <mat-card-content class="content">
-    <mat-nav-list>
-      @for (list of lists(); track $index) {
-      <div class="list-name">
-        <a mat-list-item (click)="selectList(list)" [activated]="list.id == selectedList()?.id">{{ list.listName }}</a>
-      </div>
-      } @empty {
+    @if (lists().length) {
+
+      <mat-form-field>
+        <mat-label>Select a list</mat-label>
+        <mat-select (selectionChange)="onListSelected($event)">
+          @for (list of lists(); track list.id) {
+            <mat-option value="{{ list.id }}">{{ list.listName }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    } @else {
       <div class="empty">There's nothing here!</div>
+    }
+
+      <mat-list role="list">
+      @for (item of selectedList?.listContents; track item.id) {
+        <mat-list-item role="listitem">{{ item.content }}</mat-list-item>
       }
-    </mat-nav-list>
+    </mat-list>
+    
   </mat-card-content>
   <mat-card-actions>
-    <button mat-flat-button (click)="createList()">Create a List</button>
+    <!-- <button mat-flat-button (click)="randomise()">Create a List</button> -->
   </mat-card-actions>
 </mat-card>

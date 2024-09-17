@@ -1,11 +1,19 @@
 :host {
 .list-container {
-    max-width: 15%;
+    //max-width: 15%;
     min-height: 300px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
+
+    mat-card-title {
+        display: flex; 
+        mat-icon {
+            margin-left: 10px;
+            cursor: pointer;
+        }
+    }
 
     .content {
         flex: 1;

@@ -1,0 +1,39 @@
+:host {
+  .list-container {
+    max-height: 250px;
+    overflow-y: auto;
+  }
+
+  mat-error {
+    margin: 5px;
+    text-align: right;
+  }
+
+  .inline {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  ol {
+    padding-inline-start: 15px;
+    .list-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+  }
+
+  mat-icon {
+    cursor: pointer;
+  }
+
+  .field-with-icon {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    mat-icon {
+        margin-bottom: 15px;
+    }
+  }
+}

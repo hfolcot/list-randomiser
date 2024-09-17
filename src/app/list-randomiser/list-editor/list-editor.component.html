@@ -1,1 +1,43 @@
-<p>list-editor works!</p>
+<h2 mat-dialog-title>New List</h2>
+<mat-dialog-content>
+  <mat-form-field>
+    <mat-label>List Name*</mat-label>
+    <input matInput [(ngModel)]="list().listName" (input)="clearError()" />
+  </mat-form-field>
+
+  <p>List Content</p>
+  <div class="list-container">
+    <ol>
+      @for (item of listContent; track item.id) {
+      <li class="list-item">
+       <span>{{$index +1}}. {{ item.content }} </span><mat-icon
+        aria-hidden="false"
+        aria-label="Remove"
+        fontIcon="delete"
+        (click)="removeItem(item)"
+      ></mat-icon>
+      </li>
+      }
+    </ol>
+  </div>
+  <div class="field-with-icon">
+
+    <mat-form-field>
+      <mat-label>Add to list</mat-label>
+      <input matInput [(ngModel)]="item" (keyup.enter)="addItem()" (input)="clearError()" />
+    </mat-form-field>
+    <mat-icon
+    aria-hidden="false"
+    aria-label="Add List"
+    fontIcon="add_circle"
+    (click)="addItem()"
+    ></mat-icon>
+  </div>
+  </mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-button (click)="onSave()" cdkFocusInitial>Save</button>
+  @if (listValid() == false) {
+    <mat-error>Please ensure your list has a name and at least one item</mat-error>
+  }
+</mat-dialog-actions>

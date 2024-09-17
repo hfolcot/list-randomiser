@@ -1,23 +1,32 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, output, signal } from '@angular/core';
 import { ListService } from '../list.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import { IList } from '../models/list.interface';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectChange, MatSelectModule } from '@angular/material/select';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-lists',
   standalone: true,
-  imports: [MatButtonModule, MatCardModule, MatListModule],
+  imports: [MatButtonModule, MatCardModule, MatListModule, MatFormFieldModule, MatSelectModule, MatIconModule],
   templateUrl: './lists.component.html',
   styleUrl: './lists.component.scss'
 })
 export class ListsComponent {
+  newListClick = output<void>();
+  listSelected = output<IList | undefined>();
+
   listService = inject<ListService>(ListService);
 
   lists = computed(() => this.listService.getLists());
 
-  selectedList = signal<IList | undefined>(undefined);
+  selectedList?:IList;
+
+  constructor() {
+  }
 
   // ngOnInit() {
   //   const lists: IList[] = [];
@@ -88,13 +97,14 @@ export class ListsComponent {
   //   })
   //   window.localStorage.setItem("randomiserLists", JSON.stringify(lists))
   // }
+  onListSelected(option: MatSelectChange): void {
+    this.selectedList = this.lists().find(list => Number(list.id) === Number(option.value));
 
+    this.listSelected.emit(this.selectedList);
+  }
+  
   createList(): void {
-
+    this.newListClick.emit();
   }
 
-  selectList(list: IList): void {
-    console.log(list)
-    this.selectedList.set(list);
-  }
 }
