@@ -1,7 +1,11 @@
 <div class="selected-item">
-    {{ selectedItemName }}
+  <h2>{{ selectedItemName }}</h2>
 </div>
-<button mat-button (click)="selectRandom()">Randomise</button>
-@if (complete) {
-    <button mat-button (click)="restart()">Start Over</button>
+@if (!complete) {
+
+<button mat-flat-button (click)="selectRandom()" [disabled]="animating">
+  Randomise
+</button>
+} @if (complete) {
+<button mat-button (click)="restart()">Start Over</button>
 }

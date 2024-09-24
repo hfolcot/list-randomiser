@@ -1,4 +1,4 @@
-import { Component, inject, input, model, signal } from '@angular/core';
+import { Component, inject, input, model, OnChanges, OnInit, signal } from '@angular/core';
 import { FormControl, FormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -6,6 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { IList, IListContent } from '../models/list.interface';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogClose, MatDialogContent, MatDialogRef, MatDialogTitle } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
+import { ListService } from '../list.service';
 
 @Component({
   selector: 'app-list-editor',
@@ -24,18 +25,28 @@ import { MatIconModule } from '@angular/material/icon';
   templateUrl: './list-editor.component.html',
   styleUrl: './list-editor.component.scss'
 })
-export class ListEditorComponent {
+export class ListEditorComponent implements OnInit{
   readonly dialogRef = inject(MatDialogRef<ListEditorComponent>);
-  readonly data = inject<{ list: IList }>(MAT_DIALOG_DATA);
+  readonly data = inject<{ list: IList, editMode: boolean }>(MAT_DIALOG_DATA);
+  readonly listService = inject<ListService>(ListService);
 
   list = model(this.data.list);
+  editMode = this.data.editMode;
   listContent: IListContent[] = [];
+  originalListContent: IListContent[] = [];
   item = model<string>("");
   nameFormControl = new FormControl('', [Validators.required]);
 
   listValid = signal<boolean | undefined>(undefined);
 
+  ngOnInit(): void {
+    this.listContent = this.list()?.listContents;
+    this.originalListContent = [...this.listContent];
+  }
+
   onCancel(): void {
+    debugger;
+    this.listContent = [...this.originalListContent];
     this.dialogRef.close();
   }
 
@@ -66,6 +77,11 @@ export class ListEditorComponent {
   removeItem(item: IListContent): void {
     this.listContent = this.listContent.filter(i => i.id !== item.id);
     this.updateListContent();
+  }
+
+  deleteList(): void {
+    this.listService.deleteList(this.list().id);
+    this.dialogRef.close();
   }
 
   clearError(): void {

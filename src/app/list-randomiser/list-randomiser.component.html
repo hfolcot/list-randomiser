@@ -1,14 +1,44 @@
-<div class="container">
-    <app-lists (newListClick)="onNewListClicked()" (listSelected)="onListSelected($event)"></app-lists>
-    @if (listToRandomise) {
-        <app-randomiser [(list)]="listToRandomise"></app-randomiser>   
+<!-- <div class="container"> -->
+    
+    <!-- @if (list()) {
+        <app-randomiser></app-randomiser>   
         
       <mat-list role="list">
-      @for (item of listToRandomise.listContents; track item.id) {
+      @for (item of list()?.listContents; track item.id) {
         <mat-list-item role="listitem" [class]="{'selected': item.selected}">
             {{ item.content }}
         </mat-list-item>
       }
     </mat-list> 
+    <button mat-flat-button (click)="onEditListClicked()">Edit List</button>
     }
-</div>
+</div> -->
+
+  <section class="left-panel">
+    <app-lists (newListClick)="onNewListClicked()" (editListClick)="onEditListClicked()"></app-lists>
+  </section>
+  <mat-divider [vertical]="true"></mat-divider>
+  <section class="center-panel">
+    @if (list()) {
+    <app-randomiser></app-randomiser>   
+    }
+  </section>
+  <mat-divider [vertical]="true"></mat-divider>
+  <section class="right-panel">
+    @if (list()) {
+      
+      
+    <mat-list role="list">
+    @for (item of list()?.listContents; track item.id) {
+      <mat-list-item role="listitem" [class]="{'selected': item.selected}">
+          <div class="item">{{ item.content }}</div>
+      </mat-list-item>
+      <mat-divider></mat-divider>
+    }
+  </mat-list> 
+  <div class="actions">
+    <div class="flex"></div>
+    <button mat-button (click)="onEditListClicked()">Edit List</button>
+  </div>
+  }
+  </section>

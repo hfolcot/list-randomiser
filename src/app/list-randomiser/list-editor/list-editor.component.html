@@ -1,4 +1,10 @@
-<h2 mat-dialog-title>New List</h2>
+<h2 mat-dialog-title>
+@if (editMode) {
+ Edit List
+} @else {
+  New List
+}
+</h2>
 <mat-dialog-content>
   <mat-form-field>
     <mat-label>List Name*</mat-label>
@@ -35,6 +41,12 @@
   </div>
   </mat-dialog-content>
 <mat-dialog-actions>
+  @if (editMode) {
+    <button (click)="deleteList()" mat-mini-fab aria-label="Delete List">
+      <mat-icon>delete_forever</mat-icon>
+    </button>
+  }
+  <div class="flex"></div>
   <button mat-button (click)="onCancel()">Cancel</button>
   <button mat-button (click)="onSave()" cdkFocusInitial>Save</button>
   @if (listValid() == false) {
