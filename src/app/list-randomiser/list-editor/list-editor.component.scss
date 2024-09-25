@@ -2,11 +2,11 @@
   .list-container {
     max-height: 250px;
     overflow-y: auto;
+    margin: 10px 0;
   }
 
   mat-error {
     margin: 5px;
-    text-align: right;
   }
 
   .inline {
@@ -19,12 +19,17 @@
     .list-item {
       display: flex;
       justify-content: space-between;
-      margin-bottom: 10px;
+      margin: 10px;
     }
   }
 
   mat-icon {
     cursor: pointer;
+  }
+
+  mat-card {
+    padding: 10px;
+    margin: 10px;
   }
 
   .field-with-icon {
@@ -33,7 +38,22 @@
     align-items: center;
 
     mat-icon {
-        margin-bottom: 15px;
+      margin-bottom: 15px;
+      margin-left: 10px;
     }
   }
+
+  mat-form-field {
+    flex: 1;
+  }
+
+  .title-container {
+    display: flex;
+    padding-bottom: 10px;
+  }
+
+  .absolute {
+position: absolute;
+  }
+
 }

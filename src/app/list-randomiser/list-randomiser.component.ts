@@ -39,7 +39,7 @@ export class ListRandomiserComponent {
 
     if(!listToRandomise) return;
 
-    this.openDialog(listToRandomise);
+    this.openDialog({...listToRandomise});
   }
 
   openDialog(list: IList): void {

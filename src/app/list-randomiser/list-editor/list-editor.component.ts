@@ -1,5 +1,5 @@
-import { Component, inject, input, model, OnChanges, OnInit, signal } from '@angular/core';
-import { FormControl, FormsModule, Validators } from '@angular/forms';
+import { Component, DestroyRef, inject, model, } from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -7,76 +7,101 @@ import { IList, IListContent } from '../models/list.interface';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogClose, MatDialogContent, MatDialogRef, MatDialogTitle } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { ListService } from '../list.service';
+import { notEmpty } from './validators';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-list-editor',
   standalone: true,
   imports: [
+    ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
-    FormsModule,
     MatButtonModule,
     MatDialogTitle,
     MatDialogContent,
     MatDialogActions,
     MatDialogClose,
-    MatIconModule
+    MatIconModule,
+    MatCardModule
   ],
   templateUrl: './list-editor.component.html',
   styleUrl: './list-editor.component.scss'
 })
-export class ListEditorComponent implements OnInit{
+export class ListEditorComponent {
+  private readonly destroyRef = inject<DestroyRef>(DestroyRef);
   readonly dialogRef = inject(MatDialogRef<ListEditorComponent>);
   readonly data = inject<{ list: IList, editMode: boolean }>(MAT_DIALOG_DATA);
   readonly listService = inject<ListService>(ListService);
 
   list = model(this.data.list);
   editMode = this.data.editMode;
-  listContent: IListContent[] = [];
-  originalListContent: IListContent[] = [];
-  item = model<string>("");
-  nameFormControl = new FormControl('', [Validators.required]);
+  listContent: IListContent[] = [...this.list().listContents];
 
-  listValid = signal<boolean | undefined>(undefined);
+  showError: boolean = false;
 
-  ngOnInit(): void {
-    this.listContent = this.list()?.listContents;
-    this.originalListContent = [...this.listContent];
-  }
-
-  onCancel(): void {
-    debugger;
-    this.listContent = [...this.originalListContent];
-    this.dialogRef.close();
-  }
-
-  onSave(): void {
-    if (!this.list().listContents.length && this.item().length) {
-      // If user has entered the first item but not clicked add
-      this.addItem();
-    }
-
-    this.listValid.set(this.listIsValid());
-
-    this.listValid() && this.dialogRef.close(this.list());
-  }
+  form = new FormGroup({
+    listName: new FormControl(this.list().listName, {
+      validators: [Validators.required]
+    }),
+    listItem: new FormControl('', {
+      validators: [notEmpty(this.listContent)]
+    })
+  })
 
   addItem(): void {
-    if(!this.item().length) return;
+    if (!this.form.controls.listItem.value) return;
 
-    this.listContent.push({
+    const listItem: IListContent = {
       id: this.listContent.length,
-      selected: false,
-      content: this.item()
-    });
+      content: this.form.controls.listItem.value,
+      selected: false
+    }
 
-    this.item.set("");
-    this.updateListContent();
+    this.listContent.push(listItem);
+
+    this.form.controls.listItem.setValidators([notEmpty(this.listContent)]);
+    this.form.controls.listItem.updateValueAndValidity();
+
+    this.form.controls.listItem.setValue("");
   }
 
   removeItem(item: IListContent): void {
-    this.listContent = this.listContent.filter(i => i.id !== item.id);
-    this.updateListContent();
+    this.listContent = this.listContent
+      .filter(i => item.id !== i.id)
+      .map((i, index) => {
+        return {
+          ...i,
+          id: index
+        }
+      });
+
+    this.form.controls.listItem.setValidators([notEmpty(this.listContent)]);
+    this.form.controls.listItem.updateValueAndValidity();
+  }
+
+  onSave(event: MouseEvent): void {
+    this.form.markAllAsTouched();
+
+    if (!this.form.valid || !this.listContent.length) {
+      event.preventDefault();
+      this.tempShowError();
+      return;
+    }
+
+    const list: IList = {
+      ...this.list(),
+      listName: this.form.controls.listName.value!,
+      listContents: this.listContent
+    }
+
+    this.listService.addNewList(list);
+    this.dialogRef.close();
+  }
+
+  onCancel(event: MouseEvent): void {
+    event.preventDefault();
+    this.dialogRef.close();
   }
 
   deleteList(): void {
@@ -84,15 +109,12 @@ export class ListEditorComponent implements OnInit{
     this.dialogRef.close();
   }
 
-  clearError(): void {
-    this.listValid.set(true);
-  }
+  private tempShowError(): void {
+    this.showError = true;
+    let timeout = setTimeout(() => {
+      this.showError = false;
+    }, 3000)
 
-  private listIsValid(): boolean {
-    return this.list().listContents.length > 0 && !!this.list().listName;
-  }
-
-  private updateListContent(): void {
-    this.list().listContents = this.listContent;
+    this.destroyRef.onDestroy(() => clearTimeout(timeout));
   }
 }

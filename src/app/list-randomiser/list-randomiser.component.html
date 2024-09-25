@@ -1,18 +1,3 @@
-<!-- <div class="container"> -->
-    
-    <!-- @if (list()) {
-        <app-randomiser></app-randomiser>   
-        
-      <mat-list role="list">
-      @for (item of list()?.listContents; track item.id) {
-        <mat-list-item role="listitem" [class]="{'selected': item.selected}">
-            {{ item.content }}
-        </mat-list-item>
-      }
-    </mat-list> 
-    <button mat-flat-button (click)="onEditListClicked()">Edit List</button>
-    }
-</div> -->
 
   <section class="left-panel">
     <app-lists (newListClick)="onNewListClicked()" (editListClick)="onEditListClicked()"></app-lists>

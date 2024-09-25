@@ -1,3 +1,5 @@
+<h3>{{ list()?.listName }}</h3>
+
 <div class="selected-item">
   <h2>{{ selectedItemName }}</h2>
 </div>
@@ -6,6 +8,6 @@
 <button mat-flat-button (click)="selectRandom()" [disabled]="animating">
   Randomise
 </button>
-} @if (complete) {
+} @if (started) {
 <button mat-button (click)="restart()">Start Over</button>
 }

@@ -23,6 +23,7 @@ export class RandomiserComponent {
 
   animating: boolean = false;
   complete: boolean = false;
+  started: boolean = false;
 
   selectRandom(): void {
     const remaining = this.list()?.listContents.filter(item => !item.selected);
@@ -38,6 +39,8 @@ export class RandomiserComponent {
     if (this.remainingItems.length > 1) {
       this.animate();
       this.selectRandomItem();
+      this.started = true;
+  
     } else {
       this.markItemSelected(0);
       this.complete = true;
@@ -49,6 +52,7 @@ export class RandomiserComponent {
     this.selectedItemName = "Click To Randomise!";
     this.animating = false;
     this.complete = false;
+    this.started = false;
     this.listService.resetAllLists();
   }
 
