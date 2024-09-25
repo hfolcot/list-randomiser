@@ -1,4 +1,4 @@
-import { Component, effect, inject, input, output } from '@angular/core';
+import { Component, DestroyRef, effect, inject, input, output } from '@angular/core';
 import { IList, IListContent } from '../models/list.interface';
 import { MatButtonModule } from '@angular/material/button';
 import { ListService } from '../list.service';
@@ -12,6 +12,7 @@ import { ListService } from '../list.service';
 })
 export class RandomiserComponent {
   private listService = inject<ListService>(ListService);
+  private destroyRef = inject<DestroyRef>(DestroyRef);
 
   list = this.listService.selectedList;
 
@@ -24,6 +25,11 @@ export class RandomiserComponent {
   animating: boolean = false;
   complete: boolean = false;
   started: boolean = false;
+
+  ngOnInit(): void {
+    const subscription = this.listService.newListSelected.subscribe(() => this.restart());
+    this.destroyRef.onDestroy(() => subscription.unsubscribe());
+  }
 
   selectRandom(): void {
     const remaining = this.list()?.listContents.filter(item => !item.selected);

@@ -1,5 +1,6 @@
 import { Injectable, signal } from '@angular/core';
 import { IList } from './models/list.interface';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +12,8 @@ export class ListService {
 
   allLists = this.lists.asReadonly();
   selectedList = this.selectedListObj.asReadonly();
+
+  newListSelected = new Subject<void>();
 
   constructor() {
     //this.createListsInLocalStorage();
@@ -33,6 +36,8 @@ export class ListService {
 
     this.resetAllLists();
     this.selectedListObj.set(list);
+
+    this.newListSelected.next();
   }
 
   clearSelectedList(): void {
