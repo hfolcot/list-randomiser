@@ -132,6 +132,5 @@ export class RandomiserComponent {
 
   private updateProgress(): void {
     this.progress = 100 - ((this.remainingItems.length - 1) / this.list()!.listContents!.length) * 100;
-    console.log(this.progress)
   }
 }
