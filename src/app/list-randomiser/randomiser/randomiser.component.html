@@ -11,3 +11,7 @@
 } @if (started) {
 <button mat-button (click)="restart()">Start Over</button>
 }
+
+<div class="progress">
+  <mat-progress-bar mode="determinate" [value]="progress"></mat-progress-bar>
+</div>

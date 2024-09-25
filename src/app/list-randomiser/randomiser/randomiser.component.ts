@@ -2,11 +2,12 @@ import { Component, DestroyRef, effect, inject, input, output } from '@angular/c
 import { IList, IListContent } from '../models/list.interface';
 import { MatButtonModule } from '@angular/material/button';
 import { ListService } from '../list.service';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @Component({
   selector: 'app-randomiser',
   standalone: true,
-  imports: [MatButtonModule],
+  imports: [MatButtonModule, MatProgressBarModule],
   templateUrl: './randomiser.component.html',
   styleUrl: './randomiser.component.scss'
 })
@@ -25,6 +26,8 @@ export class RandomiserComponent {
   animating: boolean = false;
   complete: boolean = false;
   started: boolean = false;
+
+  progress: number = 0;
 
   ngOnInit(): void {
     const subscription = this.listService.newListSelected.subscribe(() => this.restart());
@@ -51,6 +54,8 @@ export class RandomiserComponent {
       this.markItemSelected(0);
       this.complete = true;
     }
+
+    this.updateProgress();
   }
 
   restart(): void {
@@ -59,6 +64,7 @@ export class RandomiserComponent {
     this.animating = false;
     this.complete = false;
     this.started = false;
+    this.progress = 0;
     this.listService.resetAllLists();
   }
 
@@ -122,5 +128,10 @@ export class RandomiserComponent {
     };
 
     animateStep();
+  }
+
+  private updateProgress(): void {
+    this.progress = 100 - ((this.remainingItems.length - 1) / this.list()!.listContents!.length) * 100;
+    console.log(this.progress)
   }
 }
