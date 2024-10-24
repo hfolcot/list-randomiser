@@ -1,0 +1,11 @@
+<mat-list role="list">
+  @for (item of listContent(); track item.id) {
+  <mat-list-item role="listitem" [class]="{ selected: item.selected }">
+    <div class="item">{{ item.content }}</div>
+  </mat-list-item>
+  }
+</mat-list>
+<div class="actions">
+  <div class="flex"></div>
+  <button mat-button [routerLink]="['edit']">Edit List</button>
+</div>

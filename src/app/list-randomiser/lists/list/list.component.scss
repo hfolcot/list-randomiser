@@ -1,0 +1,25 @@
+:host {
+  border: 1px solid rgba(0, 47, 47, 1);
+  border-radius: 5px;
+  width: 100%;
+
+  .selected {
+    text-decoration: line-through;
+    .item {
+      color: rgba(255, 255, 255, 0.5);
+    }
+  }
+
+  mat-list {
+    columns: 3;
+    text-align: center;
+  }
+
+  .actions {
+    display: flex;
+    padding: 15px;
+    .flex {
+      flex: 1;
+    }
+  }
+}

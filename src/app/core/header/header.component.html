@@ -1,7 +1,7 @@
 <header>
     <img class="logo" src="mango_outline.png" alt="List Randomiser" />
     <ul>
-        <a mat-button routerLink="">List Randomiser</a>
-        <a mat-button routerLink="jokes">Joke Generator</a>
+        <a mat-button [routerLink]="['lists']" routerLinkActive="selected" class="nav-button">List Randomiser</a>
+        <a mat-button [routerLink]="['jokes']" routerLinkActive="selected" class="nav-button">Joke Generator</a>
     </ul>
 </header>

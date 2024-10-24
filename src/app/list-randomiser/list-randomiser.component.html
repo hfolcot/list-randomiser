@@ -1,13 +1,18 @@
 
-  <section class="left-panel">
-    <app-lists (newListClick)="onNewListClicked()" (editListClick)="onEditListClicked()"></app-lists>
+  <section class="left-panel-container">
+    <div class="padding"></div>
+    <div class="left-panel">
+    <app-lists></app-lists>
+  </div>
   </section>
-  <mat-divider [vertical]="true"></mat-divider>
-  <section class="center-panel">
-    @if (list()) {
+  <main class="main-container">
+    <router-outlet></router-outlet>
+  </main>
+  <!-- <section class="center-panel">
+     @if (list()) {
     <app-randomiser></app-randomiser>   
-    }
-  </section>
+    } -->
+ <!-- </section> 
   <mat-divider [vertical]="true"></mat-divider>
   <section class="right-panel">
     @if (list()) {
@@ -23,7 +28,7 @@
   </mat-list> 
   <div class="actions">
     <div class="flex"></div>
-    <button mat-button (click)="onEditListClicked()">Edit List</button>
+    <button mat-button [routerLink]="['edit', list.id]">Edit List</button>
   </div>
   }
-  </section>
+  </section> -->

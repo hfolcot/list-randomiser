@@ -1,6 +1,7 @@
-import { Injectable, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { IList } from './models/list.interface';
 import { Subject } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -9,9 +10,9 @@ export class ListService {
   private lists = signal<IList[]>([]);
   private selectedListObj = signal<IList | undefined>(undefined);
   private readonly listStorageName: string = "randomiserLists";
+  private router = inject<Router>(Router);
 
   allLists = this.lists.asReadonly();
-  selectedList = this.selectedListObj.asReadonly();
 
   newListSelected = new Subject<void>();
 
@@ -31,15 +32,6 @@ export class ListService {
     });
   }
 
-  selectList(list: IList): void {
-    this.selectedListObj.set(undefined);
-
-    this.resetAllLists();
-    this.selectedListObj.set(list);
-
-    this.newListSelected.next();
-  }
-
   clearSelectedList(): void {
     this.selectedListObj.set(undefined);
   }
@@ -56,7 +48,7 @@ export class ListService {
       ]
     })
     
-    this.selectList(list);
+    this.router.navigate(['/lists', list.id]);
 
     window.localStorage.setItem(this.listStorageName, JSON.stringify(this.lists()))
 

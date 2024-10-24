@@ -1,21 +1,28 @@
-import { Component, DestroyRef, effect, inject, input, output } from '@angular/core';
+import { Component, computed, DestroyRef, effect, inject, input, output } from '@angular/core';
 import { IList, IListContent } from '../models/list.interface';
 import { MatButtonModule } from '@angular/material/button';
 import { ListService } from '../list.service';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { ListComponent } from '../lists/list/list.component';
 
 @Component({
   selector: 'app-randomiser',
   standalone: true,
-  imports: [MatButtonModule, MatProgressBarModule],
+  imports: [MatButtonModule, MatProgressBarModule, ListComponent],
   templateUrl: './randomiser.component.html',
   styleUrl: './randomiser.component.scss'
 })
 export class RandomiserComponent {
   private listService = inject<ListService>(ListService);
-  private destroyRef = inject<DestroyRef>(DestroyRef);
 
-  list = this.listService.selectedList;
+  listId = input.required<string>();
+
+  list = computed(() => this.listService.allLists().find(list => list.id === +this.listId()));
+
+  newListEffect = effect(() => {
+    this.listId();
+    this.restart();
+  })
 
   listChange = output<IList>();
 
@@ -28,11 +35,6 @@ export class RandomiserComponent {
   started: boolean = false;
 
   progress: number = 0;
-
-  ngOnInit(): void {
-    const subscription = this.listService.newListSelected.subscribe(() => this.restart());
-    this.destroyRef.onDestroy(() => subscription.unsubscribe());
-  }
 
   selectRandom(): void {
     const remaining = this.list()?.listContents.filter(item => !item.selected);

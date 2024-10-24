@@ -1,20 +1,31 @@
 :host {
-  .list-container {
-    max-height: 250px;
-    overflow-y: auto;
-    margin: 10px 0;
+  h2 {
+    text-align: center;
+
+    .delete-button {
+      margin-left: 25px;
+      line-height: 10px;
+    }
   }
 
-  mat-error {
-    margin: 5px;
-  }
-
-  .inline {
+  form {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     align-items: center;
+
+    mat-form-field {
+      width: 50%;
+    }
   }
+
+  .button-container {
+    width: 50%;
+    display: flex;
+    justify-content: flex-end;
+  }
+
   ol {
+    width: 50%;
     padding-inline-start: 15px;
     .list-item {
       display: flex;
@@ -23,37 +34,64 @@
     }
   }
 
-  mat-icon {
-    cursor: pointer;
-  }
+  //   form {
+  //     display: flex;
+  //     flex-direction: row;
 
-  mat-card {
-    padding: 10px;
-    margin: 10px;
-  }
+  //     .button-container {
+  //       display: flex;
+  //       flex-direction: row;
+  //       padding: 25px;
+  //     }
+  //   }
 
-  .field-with-icon {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  //   .list-container {
+  //     overflow-y: auto;
+  //     flex: 1;
+  //   }
 
-    mat-icon {
-      margin-bottom: 15px;
-      margin-left: 10px;
-    }
-  }
+  //   mat-error {
+  //     margin: 5px;
+  //   }
 
-  mat-form-field {
-    flex: 1;
-  }
+  //   .inline {
+  //     display: flex;
+  //     justify-content: space-between;
+  //     align-items: center;
+  //   }
+  //   ol {
+  //     padding-inline-start: 15px;
+  //     .list-item {
+  //       display: flex;
+  //       justify-content: space-between;
+  //       margin: 10px;
+  //     }
+  //   }
 
-  .title-container {
-    display: flex;
-    padding-bottom: 10px;
-  }
+  //   mat-icon {
+  //     cursor: pointer;
+  //   }
 
-  .absolute {
-position: absolute;
-  }
+  //   mat-card {
+  //     padding: 10px;
+  //   }
 
+  //   .field-with-icon {
+  //     display: flex;
+  //     justify-content: space-between;
+  //     align-items: center;
+
+  //     mat-icon {
+  //       margin-bottom: 15px;
+  //       margin-left: 10px;
+  //     }
+  //   }
+
+  //   mat-form-field {
+  //     flex: 1;
+  //   }
+
+  //   .absolute {
+  // position: absolute;
+  //   }
 }

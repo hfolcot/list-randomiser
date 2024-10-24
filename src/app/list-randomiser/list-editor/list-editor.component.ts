@@ -1,14 +1,14 @@
-import { Component, DestroyRef, inject, model, } from '@angular/core';
+import { Component, computed, effect, inject, input, model, signal, } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { IList, IListContent } from '../models/list.interface';
-import { MAT_DIALOG_DATA, MatDialogActions, MatDialogClose, MatDialogContent, MatDialogRef, MatDialogTitle } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { ListService } from '../list.service';
 import { notEmpty } from './validators';
 import { MatCardModule } from '@angular/material/card';
+import { CanDeactivateFn, Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-list-editor',
@@ -18,27 +18,52 @@ import { MatCardModule } from '@angular/material/card';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatDialogTitle,
-    MatDialogContent,
-    MatDialogActions,
-    MatDialogClose,
     MatIconModule,
-    MatCardModule
+    MatCardModule,
+    RouterLink
   ],
   templateUrl: './list-editor.component.html',
   styleUrl: './list-editor.component.scss'
 })
 export class ListEditorComponent {
-  private readonly destroyRef = inject<DestroyRef>(DestroyRef);
-  readonly dialogRef = inject(MatDialogRef<ListEditorComponent>);
-  readonly data = inject<{ list: IList, editMode: boolean }>(MAT_DIALOG_DATA);
-  readonly listService = inject<ListService>(ListService);
+  private readonly listService = inject<ListService>(ListService);
+  private readonly router = inject<Router>(Router);
 
-  list = model(this.data.list);
-  editMode = this.data.editMode;
+  listId = input<string | undefined>();
+
+  editMode = computed(() => !!this.listId());
+
+  list = signal<IList>({
+    id: this.listService.getNewListId(),
+    listName: "",
+    listContents: []
+  })
+
+  listEffect = effect(() => {
+    if (this.listId() !== undefined) {
+      const foundList = this.listService.allLists().find(list => list.id == Number(this.listId()));
+      if(!foundList) return;
+
+      this.list.set(foundList!);
+      
+      this.form = new FormGroup({
+        listName: new FormControl(this.list()?.listName, {
+          validators: [Validators.required]
+        }),
+        listItem: new FormControl('', {
+          validators: [notEmpty(this.listContent)]
+        })
+      })
+      this.listContent = [...this.list()?.listContents];
+      this.form.controls.listItem.setValidators([notEmpty(this.listContent)]);
+      this.form.controls.listItem.updateValueAndValidity();
+    }
+  },
+    {
+      allowSignalWrites: true
+    })
+
   listContent: IListContent[] = [...this.list().listContents];
-
-  showError: boolean = false;
 
   form = new FormGroup({
     listName: new FormControl(this.list().listName, {
@@ -48,6 +73,10 @@ export class ListEditorComponent {
       validators: [notEmpty(this.listContent)]
     })
   })
+
+  showError: boolean = false;
+
+  //--
 
   addItem(): void {
     if (!this.form.controls.listItem.value) return;
@@ -85,7 +114,6 @@ export class ListEditorComponent {
 
     if (!this.form.valid || !this.listContent.length) {
       event.preventDefault();
-      this.tempShowError();
       return;
     }
 
@@ -96,25 +124,11 @@ export class ListEditorComponent {
     }
 
     this.listService.addNewList(list);
-    this.dialogRef.close();
-  }
-
-  onCancel(event: MouseEvent): void {
-    event.preventDefault();
-    this.dialogRef.close();
   }
 
   deleteList(): void {
     this.listService.deleteList(this.list().id);
-    this.dialogRef.close();
+    this.router.navigate(['/']);
   }
 
-  private tempShowError(): void {
-    this.showError = true;
-    let timeout = setTimeout(() => {
-      this.showError = false;
-    }, 3000)
-
-    this.destroyRef.onDestroy(() => clearTimeout(timeout));
-  }
 }

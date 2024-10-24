@@ -1,38 +1,37 @@
-<h2 mat-dialog-title>@if (editMode) { Edit List } @else { New List }</h2>
-<form
-  [formGroup]="form"
-  (ngSubmit)="onSave($event)"
-  (keydown.enter)="$event.preventDefault()"
->
-  <mat-dialog-content>
-    <div class="title-container">
+<h2>@if (editMode()) { 
+  Edit <button (click)="deleteList()" class="delete-button" mat-mini-fab aria-label="Delete List">
+    <mat-icon>delete_forever</mat-icon>
+  </button>
+} @else { 
+  New List 
+}</h2>
+<form [formGroup]="form"
+      (ngSubmit)="onSave($event)"
+      (keydown.enter)="$event.preventDefault()">
       <mat-form-field>
         <mat-label>List Name</mat-label>
         <input matInput formControlName="listName" />
-        @if (form.controls.listName.touched && form.controls.listName.invalid) {
+        @if (form.controls.listName.touched && form.controls.listName.invalid)
+        {
         <mat-error>Please give your list a name</mat-error>
         }
       </mat-form-field>
-    </div>
-
-    <div class="field-with-icon">
       <mat-form-field>
         <mat-label>Add Item</mat-label>
-        <input matInput (keyup.enter)="addItem()" formControlName="listItem" />
-        @if (form.controls.listItem.touched && form.controls.listItem.invalid) {
+        <input matInput 
+              (keyup.enter)="addItem()"
+              formControlName="listItem">
+              
+        <mat-icon matSuffix (click)="addItem()">add_circle</mat-icon>
+        @if (form.controls.listItem.touched && form.controls.listItem.invalid)
+        {
         <mat-error>Please enter at least one item</mat-error>
-      }
+        }
       </mat-form-field>
-
-      <mat-icon
-        aria-hidden="false"
-        aria-label="Add List"
-        fontIcon="add_circle"
-        (click)="addItem()">
-    </mat-icon>
-    </div>
-    <mat-card appearance="outlined" class="list-container">
-      <p>List Content</p>
+      <div class="button-container">
+        <button mat-button [routerLink]="['lists']">Cancel</button>
+        <button mat-button type="submit" mat-flat-button cdkFocusInitial>Save</button>
+      </div>
       <ol>
         @for (item of listContent; track item.id) {
         <li class="list-item">
@@ -41,25 +40,84 @@
             aria-hidden="false"
             aria-label="Remove"
             fontIcon="delete"
-            (click)="removeItem(item)">
+            (click)="removeItem(item)"
+          >
           </mat-icon>
         </li>
-        } 
-        @empty { 
-        <div class="list-item" [@fade]="!showError">No items!</div>
-      }
+        } @empty {
+        <div class="list-item" [@fade]="!showError">This list is empty</div>
+        }
       </ol>
-    </mat-card>
-  </mat-dialog-content>
-
-  <mat-dialog-actions>
-    @if (editMode) {
-    <button (click)="deleteList()" mat-mini-fab aria-label="Delete List">
-      <mat-icon>delete_forever</mat-icon>
-    </button>
-    }
-    <div class="flex"></div>
-    <button mat-button (click)="onCancel($event)">Cancel</button>
-    <button mat-button type="submit" cdkFocusInitial>Save</button>
-  </mat-dialog-actions>
 </form>
+
+
+<!-- <h2>@if (editMode()) { Edit } @else { New List }</h2>
+<div class="editor-container">
+  <form
+    [formGroup]="form"
+    (ngSubmit)="onSave($event)"
+    (keydown.enter)="$event.preventDefault()"
+  >
+   
+        <mat-card appearance="outlined" class="list-container">
+        
+            
+            <mat-form-field>
+            <mat-label>List Name</mat-label>
+            <input matInput formControlName="listName" />
+            @if (form.controls.listName.touched && form.controls.listName.invalid)
+            {
+            <mat-error>Please give your list a name</mat-error>
+            }
+          </mat-form-field>
+          
+          <div class="field-with-icon">
+            <mat-form-field>
+              <mat-label>Add Item</mat-label>
+              <input
+                matInput
+                (keyup.enter)="addItem()"
+                formControlName="listItem"
+              />
+              @if (form.controls.listItem.touched && form.controls.listItem.invalid)
+              {
+              <mat-error>Please enter at least one item</mat-error>
+              }
+            </mat-form-field>
+    
+            <mat-icon
+              aria-hidden="false"
+              aria-label="Add List"
+              fontIcon="add_circle"
+              (click)="addItem()"
+            >
+            </mat-icon>
+          </div>
+          <div class="button-container">
+
+            @if (editMode()) {
+              <button (click)="deleteList()" mat-mini-fab aria-label="Delete List">
+                <mat-icon>delete_forever</mat-icon>
+              </button>
+            }
+            <button mat-button type="submit" cdkFocusInitial>Save</button>
+          </div>
+          <ol>
+            @for (item of listContent; track item.id) {
+            <li class="list-item">
+              <span>{{ $index + 1 }}. {{ item.content }} </span>
+              <mat-icon
+                aria-hidden="false"
+                aria-label="Remove"
+                fontIcon="delete"
+                (click)="removeItem(item)"
+              >
+              </mat-icon>
+            </li>
+            } @empty {
+            <div class="list-item" [@fade]="!showError">No items!</div>
+            }
+          </ol>
+        </mat-card>
+  </form>
+</div> -->
