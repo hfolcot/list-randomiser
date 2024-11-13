@@ -7,11 +7,11 @@
 <button mat-flat-button (click)="selectRandom()" [disabled]="animating" [class]="{'hidden' : complete}">
   Randomise
 </button>
-<button mat-button (click)="restart()" [class]="{'hidden' : !started}">Start Over</button>
 
 
 <div class="progress">
   <mat-progress-bar mode="determinate" [value]="progress"></mat-progress-bar>
 </div>
 
+<button mat-button (click)="restart()" [class]="{'hidden' : !started}">Start Over</button>
 <app-list [listContent]="list()!.listContents"></app-list>
