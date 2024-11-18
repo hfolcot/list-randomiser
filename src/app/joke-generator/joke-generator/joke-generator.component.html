@@ -1,1 +1,7 @@
-<h2>Coming soon!</h2>
+<div>
+    <h2>{{ joke() }}</h2>
+  </div>
+  
+  <button mat-button mat-flat-button cdkFocusInitial (click)="getJoke()">
+      Get another Joke
+  </button>
