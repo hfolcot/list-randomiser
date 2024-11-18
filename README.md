@@ -1,5 +1,9 @@
 # ListRandomiser
 
+List Randomiser by [hfolcot](https://github.com/hfolcot)
+
+Joke Generator by [b4rn3y21](https://github.com/b4rn3y21)
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.1.0.
 
 ## Development server
