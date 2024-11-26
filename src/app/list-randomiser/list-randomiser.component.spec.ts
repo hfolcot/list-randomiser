@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ListRandomiserComponent } from './list-randomiser.component';
+import { provideRouter } from '@angular/router';
 
 describe('ListRandomiserComponent', () => {
   let component: ListRandomiserComponent;
@@ -8,7 +9,10 @@ describe('ListRandomiserComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ListRandomiserComponent]
+      imports: [ListRandomiserComponent],
+      providers: [
+        provideRouter([])
+      ]
     })
     .compileComponents();
 

@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { EmptyStateComponent } from './empty-state.component';
+import { provideRouter } from '@angular/router';
+import { MatButtonModule } from '@angular/material/button';
 
 describe('EmptyStateComponent', () => {
   let component: EmptyStateComponent;
@@ -8,7 +10,8 @@ describe('EmptyStateComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [EmptyStateComponent]
+      imports: [EmptyStateComponent],
+      providers: [provideRouter([])]
     })
     .compileComponents();
 

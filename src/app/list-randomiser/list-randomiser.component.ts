@@ -16,14 +16,11 @@ import { RouterLink, RouterOutlet } from '@angular/router';
   standalone: true,
   imports: [
     ListsComponent,
-    ListEditorComponent,
     MatDialogModule,
-    RandomiserComponent,
     MatListModule,
     MatIconModule,
     MatButtonModule,
-    RouterOutlet,
-    RouterLink],
+    RouterOutlet],
   templateUrl: './list-randomiser.component.html',
   styleUrl: './list-randomiser.component.scss'
 })
